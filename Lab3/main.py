@@ -1,15 +1,14 @@
 type Node = tuple[int, Node, Node] | None
 
-def left_value(root: int) -> int:
-    return root + 2
-
-def right_value(root: int) -> int:
-    return root * 3
-
-def gen_bin_tree(height: int, root: int) -> Node:
+def gen_bin_tree(
+    height: int,
+    root: int,
+    left_leaf = lambda x: x * 4,
+    right_leaf = lambda x: x + 1
+) -> Node:
     if height == 0: return None
-    left = gen_bin_tree(height - 1, left_value(root)) 
-    right = gen_bin_tree(height - 1, right_value(root))  
+    left = gen_bin_tree(height - 1, left_leaf(root), left_leaf, right_leaf) 
+    right = gen_bin_tree(height - 1, right_leaf(root), left_leaf, right_leaf) 
     return (root, left, right)
 
 def print_bin_tree(node: Node, indent: int = 0) -> None:
@@ -20,4 +19,4 @@ def print_bin_tree(node: Node, indent: int = 0) -> None:
     print_bin_tree(node[2], indent + 3 + len(str(value)))
 
 if __name__ == "__main__":
-    print_bin_tree(gen_bin_tree(5, 1))
+    print_bin_tree(gen_bin_tree(4, 4))

@@ -1,23 +1,26 @@
-from main import gen_bin_tree, left_value, right_value, Node
+from main import gen_bin_tree, Node
 import unittest
+
+left_leaf = lambda x: x * 4
+right_leaf = lambda x: x + 1
 
 class Test(unittest.TestCase):
     def test1(self):
         self.assertEqual(
             gen_bin_tree(3, 2), 
             (2,
-                (left_value(2),
-                    (left_value(left_value(2)),
+                (left_leaf(2),
+                    (left_leaf(left_leaf(2)),
                         None,
                         None),
-                    (right_value(left_value(2)),
+                    (right_leaf(left_leaf(2)),
                         None,
                         None)),
-                (right_value(2),
-                    (left_value(right_value(2)),
+                (right_leaf(2),
+                    (left_leaf(right_leaf(2)),
                         None,
                         None),
-                    (right_value(right_value(2)),
+                    (right_leaf(right_leaf(2)),
                         None,
                         None)))
         )
