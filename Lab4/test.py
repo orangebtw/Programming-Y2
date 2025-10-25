@@ -1,32 +1,89 @@
 from main import gen_bin_tree
 import unittest
 
-left_leaf = lambda x: x * 4
-right_leaf = lambda x: x + 1
+
+def left_leaf(x):
+    return x * 4
+
+
+def right_leaf(x):
+    return x + 1
+
 
 class Test(unittest.TestCase):
     def test1(self):
+        l = left_leaf
+        r = right_leaf
+        root = 2
         self.assertEqual(
-            gen_bin_tree(3, 2), 
-            [2,
-                [left_leaf(2),
-                    [left_leaf(left_leaf(2)),
-                        None,
-                        None],
-                    [right_leaf(left_leaf(2)),
-                        None,
-                        None]],
-                [right_leaf(2),
-                    [left_leaf(right_leaf(2)),
-                        None,
-                        None],
-                    [right_leaf(right_leaf(2)),
-                        None,
-                        None]]]
+            gen_bin_tree(3, root),
+            [root,
+                [l(root),
+                    [l(l(root)),
+                        [l(l(l(root))), None, None],
+                        [r(l(l(root))), None, None]],
+                    [r(l(root)),
+                        [l(r(l(root))), None, None],
+                        [r(r(l(root))), None, None]]],
+                [r(root),
+                    [l(r(root)),
+                        [l(l(r(root))), None, None],
+                        [r(l(r(root))), None, None]],
+                    [r(r(root)),
+                        [l(r(r(root))), None, None],
+                        [r(r(r(root))), None, None]]]
+            ]
         )
 
     def test2(self):
-        self.assertEqual(gen_bin_tree(1, 0), [0, None, None])
+        """Тест при нулевом height"""
+        self.assertEqual(gen_bin_tree(0, 4), [4, None, None])
+
+    def test3(self):
+        """Тест при отрицательном height"""
+        self.assertEqual(gen_bin_tree(-5, 4), None)
+
+    def test4(self):
+        l = left_leaf
+        r = right_leaf
+        root = 4
+        self.maxDiff = None
+        self.assertEqual(
+            gen_bin_tree(4, root),
+            [root,
+                [l(root),
+                    [l(l(root)),
+                        [l(l(l(root))),
+                            [l(l(l(l(root)))), None, None],
+                            [r(l(l(l(root)))), None, None]],
+                        [r(l(l(root))),
+                            [l(r(l(l(root)))), None, None],
+                            [r(r(l(l(root)))), None, None]]],
+                    [r(l(root)),
+                        [l(r(l(root))),
+                            [l(l(r(l(root)))), None, None],
+                            [r(l(r(l(root)))), None, None]],
+                        [r(r(l(root))),
+                            [l(r(r(l(root)))), None, None],
+                            [r(r(r(l(root)))), None, None]]]],
+                [r(root),
+                    [l(r(root)),
+                        [l(l(r(root))),
+                            [l(l(l(r(root)))), None, None],
+                            [r(l(l(r(root)))), None, None]],
+                        [r(l(r(root))),
+                            [l(r(l(r(root)))), None, None],
+                            [r(r(l(r(root)))), None, None]]],
+                    [r(r(root)),
+                        [l(r(r(root))),
+                            [l(l(r(r(root)))), None, None],
+                            [r(l(r(r(root)))), None, None]],
+                        [r(r(r(root))),
+                            [l(r(r(r(root)))), None, None],
+                            [r(r(r(r(root)))), None, None]]]]
+            ]
+        )
+
 
 if __name__ == "__main__":
     unittest.main()
