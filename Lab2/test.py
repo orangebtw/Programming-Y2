@@ -1,13 +1,29 @@
-import task1
+from task1 import find_elements, find_elements2
 import unittest
 
 class Test(unittest.TestCase):
     def test1(self):
-        result = task1.find_elements([1, 2, 3, 5, 6], 8)
-        self.assertEqual(result, [1, 4])
+        arr = [1, 2, 3, 5, 6]
+        target = 8
+        a, b = find_elements(arr, target)
+        self.assertEqual(arr[a] + arr[b], target)
 
     def test2(self):
-        result = task1.find_elements([1, 2, 3, 5, 6], 25)
+        arr = [1, 2, 3, 5, 6]
+        target = 8
+        a, b = find_elements2(arr, target)
+        self.assertEqual(arr[a] + arr[b], target)
+
+    def test3(self):
+        arr = [1, 2, 3, 5, 6]
+        target = 25
+        result = find_elements(arr, target)
+        self.assertEqual(result, [])
+
+    def test4(self):
+        arr = [1, 2, 3, 5, 6]
+        target = 25
+        result = find_elements2(arr, target)
         self.assertEqual(result, [])
     
 if __name__ == '__main__':
