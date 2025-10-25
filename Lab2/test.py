@@ -1,6 +1,7 @@
 from task1 import find_elements, find_elements2
 import unittest
 
+
 class Test(unittest.TestCase):
     def test1(self):
         arr = [1, 2, 3, 5, 6]
@@ -25,6 +26,7 @@ class Test(unittest.TestCase):
         target = 25
         result = find_elements2(arr, target)
         self.assertEqual(result, [])
-    
+
+
 if __name__ == '__main__':
     unittest.main()

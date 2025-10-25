@@ -1,10 +1,12 @@
 def find_elements(nums: list[int], target: int) -> list[int]:
     for i in range(len(nums)):
         for j in range(len(nums)):
-            if i == j: continue
+            if i == j:
+                continue
             if nums[i] + nums[j] == target:
                 return [i, j]
     return []
+
 
 def find_elements2(nums: list[int], target: int) -> list[int]:
     visited = {}
@@ -15,9 +17,9 @@ def find_elements2(nums: list[int], target: int) -> list[int]:
             return [visited[a], i]
     return []
 
+
 def main():
     variant = int(input("Вариант алгоритма (0 - первый, 1 - второй): "))
-
 
     n = int(input("Кол-во элементов: "))
     arr: list[int] = list()
@@ -43,6 +45,6 @@ def main():
     else:
         print("Результат:", result)
 
+
 if __name__ == "__main__":
     main()
-    
