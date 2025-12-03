@@ -1,0 +1,40 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    width: 100vw;
+    height: 100vh;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    background-color: #0F0E0E;
+    color: white;
+    font-family: 'Montserrat';
+}
+
+#main_container {
+    margin-top: 50px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    line-height: 1.4;
+}
+
+#author_info {
+    font-size: 2em;
+    font-weight: 500;
+}
+
+#author_info__name {
+    color: palegreen;
+    font-size: 1.5em;
+}
+
+#author_info__group {
+    color: paleturquoise;
+}
