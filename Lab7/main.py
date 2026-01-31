@@ -137,8 +137,6 @@ class HttpHandler(BaseHTTPRequestHandler):
         user_currencies = filter(lambda uc: str(uc.user_id) == id, USER_CURRENCIES)
         currencies = get_currencies(list(map(lambda uc: uc.currency_id, user_currencies)))
         
-        print(currencies)
-        
         data = params | {
             'app': APP,
             'pages': PAGES,
