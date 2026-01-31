@@ -46,9 +46,23 @@
 
 ![Страница с информацией об авторе](./screenshots/author.png)
 
-## Тестирование 
+## Тестирование
 
-Будет сделано...
+Вывод:
+
+1. `test_get_currencies` -- Тестирование функции `get_currencies` при правильных ID.
+2. `test_get_currencies_wrong_id` -- Тестирование функции `get_currencies` при неправильном ID.
+3. `test_author_controller` -- Тестирование `AuthorController`.
+4. `test_currencies_controller` -- Тестирование `CurrenciesController`.
+5. `test_users_controller` -- Тестирование `UsersController`.
+
+```shell
+.....
+----------------------------------------------------------------------
+Ran 5 tests in 0.174s
+
+OK
+```
 
 ## Выводы
 

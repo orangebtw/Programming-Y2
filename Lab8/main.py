@@ -3,12 +3,6 @@ from http.server import HTTPServer, BaseHTTPRequestHandler
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 from urllib.parse import parse_qsl
 from pathlib import Path
-from utils.currencies_api import get_currencies
-
-from models.app import App
-from models.author import Author
-from models.user import User
-from models.user_currency import UserCurrency
 
 from controllers.userController import UserController
 from controllers.currenciesController import CurrenciesController
@@ -16,24 +10,6 @@ from controllers.authorController import AuthorController
 from controllers.databaseController import CurrencyDatabase, UserDatabase, UserCurrencyDatabase
 
 from utils.response import *
-
-USERS = (
-    User(1, 'Илон Маск'),
-    User(2, 'Дональд Трамп'),
-    User(3, 'Барак Обама'),
-)
-
-USER_CURRENCIES = (
-    UserCurrency(1, 1, 'R01235'),
-    UserCurrency(2, 1, 'R01375'),
-    UserCurrency(3, 1, 'R01035'),
-    
-    UserCurrency(4, 2, 'R01235'),
-    UserCurrency(5, 2, 'R01375'),
-    UserCurrency(6, 2, 'R01035'),
-    
-    UserCurrency(7, 3, 'R01235'),
-)
 
 MIME_TYPES: dict = {
     '.css': 'text/css',
@@ -55,11 +31,11 @@ user_currencies_database = UserCurrencyDatabase()
 
 class HttpHandler(BaseHTTPRequestHandler):
     def __init__(self, request, client_address, server):
-        self.user_controller = UserController(self, user_database, user_currencies_database, currency_database, env)
-        self.author_controller = AuthorController(self, env)
-        self.currencies_controller = CurrenciesController(self, currency_database, env)
+        self.user_controller = UserController(user_database, user_currencies_database, currency_database, env)
+        self.author_controller = AuthorController(env)
+        self.currencies_controller = CurrenciesController(currency_database, env)
         
-        super().__init__(request, client_address, server),
+        super().__init__(request, client_address, server)
     
     def do_GET(self):
         path = self.path
@@ -77,19 +53,26 @@ class HttpHandler(BaseHTTPRequestHandler):
             self.serve_static(path.removeprefix('/static'))
             return
             
-        if self.author_controller.handle_get(path, params):
+        response = self.author_controller.handle_get(path, params)
+        if response is not None:
+            handle_response(self, response)
             return
         
-        if self.user_controller.handle_get(path, params):
+        response = self.user_controller.handle_get(path, params)
+        if response is not None:
+            handle_response(self, response)
             return
         
-        if self.currencies_controller.handle_get(path, params):
+        response = self.currencies_controller.handle_get(path, params)
+        if response is not None:
+            handle_response(self, response)
             return
         
         self.page404()
 
     def do_POST(self):
         self.send_response(HTTPStatus.BAD_REQUEST)
+        self.end_headers()
 
     def page404(self):
         respond_html(self, template_404.render(), status=404)

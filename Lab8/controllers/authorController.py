@@ -1,37 +1,32 @@
-from http.server import BaseHTTPRequestHandler
-
 from utils.response import *
 
 from jinja2.environment import Environment
 
-from common import APP, PAGES
+from common import APP, PAGES, Response
 
 class AuthorController:
-    def __init__(self, handler: BaseHTTPRequestHandler, env: Environment):
-        self.handler = handler
+    def __init__(self, env: Environment):
         self.template_index = env.get_template("index.html")
         self.template_author = env.get_template("author.html")
     
-    def handle_get(self, path: str, params: dict) -> bool:
+    def handle_get(self, path: str, params: dict) -> Response | None:
         if path == '/':
-            self._handle_index(params)
-            return True
+            return self._handle_index(params)
         if path == '/author':
-            self._handle_author(params)
-            return True
+            return self._handle_author(params)
         
-        return False
+        return None
     
-    def _handle_index(self, params: dict):
+    def _handle_index(self, params: dict) -> Response:
         data = params | {
             'app': APP,
             'pages': PAGES
         }
-        respond_html(self.handler, self.template_index.render(data))
+        return Response.html(self.template_index.render(data))
     
     def _handle_author(self, params: dict):
         data = params | {
             'app': APP,
             'pages': PAGES
         }
-        respond_html(self.handler, self.template_author.render(data))
+        return Response.html(self.template_author.render(data))

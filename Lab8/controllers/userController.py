@@ -1,60 +1,48 @@
-from http.server import BaseHTTPRequestHandler
-
 from jinja2.environment import Environment
 
-from models.user import User
-from models.user_currency import UserCurrency
-
 from utils.response import *
-from utils.currencies_api import get_currencies
-from common import APP, PAGES
+from common import APP, PAGES, Response
 
 from controllers.databaseController import UserDatabase, UserCurrencyDatabase, CurrencyDatabase
 
 class UserController:
-    def __init__(self, handler: BaseHTTPRequestHandler, users_db: UserDatabase, user_currencies_db: UserCurrencyDatabase, currencies_db: CurrencyDatabase, env: Environment):
-        self.handler = handler
+    def __init__(self, users_db: UserDatabase, user_currencies_db: UserCurrencyDatabase, currencies_db: CurrencyDatabase, env: Environment):
         self.users_db = users_db
         self.user_currencies_db = user_currencies_db
         self.currencies_db = currencies_db
         self.template_users = env.get_template('users.html')
         self.template_user = env.get_template('user.html')
     
-    def handle_get(self, path: str, params: dict) -> bool:
+    def handle_get(self, path: str, params: dict) -> Response | None:
         if path == '/users':
-            self._handle_users(params)
-            return True
+            return self._handle_users(params)
         if path == '/user':
-            self._handle_user(params)
-            return True
+            return self._handle_user(params)
         
-        return False
+        return None
     
-    def _handle_users(self, params: dict):
+    def _handle_users(self, params: dict) -> Response:
         users = self.users_db.get_all()
         data = params | {
             'app': APP,
             'pages': PAGES,
             'users': users,
         }
-        respond_html(self.handler, self.template_users.render(data))
+        return Response.html(self.template_users.render(data))
     
-    def _handle_user(self, params: dict):
+    def _handle_user(self, params: dict) -> Response:
         id = params.get('id')
         if id is None:
-            redirect(self.handler, '/users')
-            return
+            return Response.redirect('/users')
         
         try:
             id = int(id)
         except ValueError:
-            self.handler.send_response(HTTPStatus.BAD_REQUEST)
-            return
+            return Response(HTTPStatus.BAD_REQUEST)
         
         user = self.users_db.get_by_id(int(id))
         if user is None:
-            self.handler.send_response(HTTPStatus.NOT_FOUND)
-            return
+            return Response(HTTPStatus.NOT_FOUND)
         
         user_currencies = self.user_currencies_db.get_by_user_id(user.id)
         currencies = map(lambda uc: self.currencies_db.get_by_id(uc.currency_id), user_currencies)
@@ -65,4 +53,4 @@ class UserController:
             'user': user,
             'currencies': currencies
         }
-        respond_html(self.handler, self.template_user.render(data))
+        return Response.html(self.template_user.render(data))

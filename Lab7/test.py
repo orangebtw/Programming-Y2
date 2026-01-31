@@ -56,7 +56,7 @@ class Test(unittest.TestCase):
         result = get_currencies(['KEK'])
         self.assertEqual(len(result), 0)
         
-    def test_handler_user(self):
+    def test_handler_index(self):
         handler = TestHttpHandler(MockRequest("GET / HTTP/1.1"), client_address=("127.0.0.1", 1234), server=self)
         result: bytes = handler.wfile.getvalue()
         template = self.template_index.render({'app': APP, 'pages': PAGES}).encode('utf-8')
