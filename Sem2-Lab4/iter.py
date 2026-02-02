@@ -4,7 +4,7 @@ from typing import Iterable
 class FibonacciIter:
     """Обычный итератор, находящий числа в коллекции, состоящие в последовательности фибоначи"""
     
-    def __init__(self, container: Iterable):
+    def __init__(self, container: Iterable[int]):
         self.container = container
         self.index = 0
 

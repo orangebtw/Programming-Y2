@@ -13,5 +13,8 @@ class TestGenFib(TestCase):
     def test2(self):
         self.assertEqual(self.gen.send(0), [])
         
+    def tearDown(self):
+        del self.gen
+        
 if __name__ == "__main__":
     unittest.main()
