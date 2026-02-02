@@ -1,10 +1,15 @@
 import math
+from typing import Iterable
 
 class FibonacciGetItem:
-    def __init__(self, container):
+    """Упрощённый итератор, находящий числа в коллекции, состоящие в последовательности фибоначи"""
+    
+    def __init__(self, container: Iterable):
         self.data = [x for x in container if self._is_fib(x)]
 
-    def _is_fib(self, n):
+    def _is_fib(self, n: int) -> bool:
+        """Вспомогательная функция для проверки, что число состоит в последовательности фибоначи"""
+        
         x1 = 5*n*n + 4
         s1 = int(math.sqrt(x1))
 
@@ -18,7 +23,7 @@ class FibonacciGetItem:
         
         return False
 
-    def __getitem__(self, index):
+    def __getitem__(self, index: int):
         if index >= len(self.data):
             raise IndexError
         return self.data[index]

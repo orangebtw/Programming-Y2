@@ -1,14 +1,17 @@
 import math
+from typing import Iterable
 
 class FibonacciIter:
-    def __init__(self, container):
+    """Обычный итератор, находящий числа в коллекции, состоящие в последовательности фибоначи"""
+    
+    def __init__(self, container: Iterable):
         self.container = container
         self.index = 0
 
     def __iter__(self):
         return self
 
-    def __next__(self):
+    def __next__(self) -> int:        
         while True:
             if self.index >= len(self.container):
                 raise StopIteration
