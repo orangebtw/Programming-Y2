@@ -1,12 +1,14 @@
 import requests
 import pandas as pd
 import yaml
+from abs import ABC, abstractmethod
 
-class Component():
+class Component(ABC):
     """
     Базовый интерфейс Компонента определяет поведение, которое изменяется
     декораторами.
     """
+    @abstractmethod
     def operation(self):
         pass
 
