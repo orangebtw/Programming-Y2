@@ -1,7 +1,7 @@
 import requests
 import pandas as pd
 import yaml
-from abs import ABC, abstractmethod
+from abc import ABC, abstractmethod
 
 class Component(ABC):
     """

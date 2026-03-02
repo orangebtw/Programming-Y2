@@ -24,7 +24,7 @@ class FibonacciGetItem:
         
         return False
 
-    def __getitem__(self, index: int):
+    def __getitem__(self, index: int) -> int:
         if index >= len(self.data):
             raise IndexError
         return self.data[index]
