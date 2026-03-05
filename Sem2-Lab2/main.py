@@ -1,3 +1,4 @@
+from typing import Any
 import requests
 import pandas as pd
 import yaml
@@ -9,7 +10,7 @@ class Component(ABC):
     декораторами.
     """
     @abstractmethod
-    def operation(self):
+    def operation(self) -> Any:
         pass
 
 class Decorator(Component):
@@ -30,7 +31,7 @@ class Decorator(Component):
     def component(self):
         return self._component
 
-    def operation(self):
+    def operation(self) -> Any:
         return self._component.operation()
 
 class FetchCourses(Component):
@@ -44,7 +45,7 @@ class FetchCourses(Component):
 
         self._courses = courses
 
-    def operation(self) -> dict:
+    def operation(self) -> list[dict]:
         response = requests.get("https://www.cbr-xml-daily.ru/daily_json.js")
         if response.status_code != 200:
             raise Exception("Ошибка выполнения запроса к API")
