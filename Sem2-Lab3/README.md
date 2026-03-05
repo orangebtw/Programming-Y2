@@ -6,5 +6,5 @@
 ## Запуск
 Для запуска выполните данную команду в терминале:
 ```shell
-uvicorn main:app --reload
+uvicorn main:app 
 ```
