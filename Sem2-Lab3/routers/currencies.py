@@ -4,7 +4,6 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from database import get_db_session
 from schemas.currency import CurrencySchema
-from schemas.response import ResponseSchema, ErrorSchema
 from models.currency import Currency
 from database import engine
 from utils import fetch_currencies
@@ -17,7 +16,7 @@ async def currencies(session: AsyncSession = Depends(get_db_session)):
     result = await session.execute(select(Currency))
     currencies = result.scalars().all()
     data = list(map(lambda c: CurrencySchema.model_validate(c), currencies))
-    return ResponseSchema(success=True, data=data)
+    return data
 
 @router.post("/update")
 async def update_currencies(session: AsyncSession = Depends(get_db_session)):
@@ -31,4 +30,4 @@ async def update_currencies(session: AsyncSession = Depends(get_db_session)):
         currencies
     ))
     await session.commit()
-    return ResponseSchema(success=True)
+    return "success"
