@@ -68,17 +68,17 @@ class ConvertToYAML(Decorator):
     """
     Конкретный декоратор, трансформирующий результат в формат YAML
     """
-    from yaml import safe_dump
+    import yaml
     def operation(self) -> str:
-        return self.safe_dump(self.component.operation(), allow_unicode=True)
+        return self.yaml.safe_dump(self.component.operation(), allow_unicode=True)
 
 class ConvertToCSV(Decorator):
     """
     Конкретный декоратор, трансформирующий результат в формат CSV
     """
-    from pandas import DataFrame
+    import pandas as pd 
     def operation(self) -> str:
-        df = self.DataFrame(self.component.operation())
+        df = self.pd.DataFrame(self.component.operation())
         return df.to_csv(index=False)
 
 if __name__ == "__main__":
