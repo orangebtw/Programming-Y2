@@ -1,7 +1,4 @@
 from typing import Any
-import requests
-import pandas as pd
-import yaml
 from abc import ABC, abstractmethod
 
 class Component(ABC):
@@ -40,13 +37,15 @@ class FetchCourses(Component):
     с помощью API Центробанка
     """
 
+    import requests
+
     def __init__(self, courses: list[str] | None = None) -> None:
         super().__init__()
 
         self._courses = courses
 
     def operation(self) -> list[dict]:
-        response = requests.get("https://www.cbr-xml-daily.ru/daily_json.js")
+        response = self.requests.get("https://www.cbr-xml-daily.ru/daily_json.js")
         if response.status_code != 200:
             raise Exception("Ошибка выполнения запроса к API")
         try:
@@ -69,15 +68,17 @@ class ConvertToYAML(Decorator):
     """
     Конкретный декоратор, трансформирующий результат в формат YAML
     """
+    from yaml import safe_dump
     def operation(self) -> str:
-        return yaml.safe_dump(self.component.operation(), allow_unicode=True)
+        return self.safe_dump(self.component.operation(), allow_unicode=True)
 
 class ConvertToCSV(Decorator):
     """
     Конкретный декоратор, трансформирующий результат в формат CSV
     """
+    from pandas import DataFrame
     def operation(self) -> str:
-        df = pd.DataFrame(self.component.operation())
+        df = self.DataFrame(self.component.operation())
         return df.to_csv(index=False)
 
 if __name__ == "__main__":
